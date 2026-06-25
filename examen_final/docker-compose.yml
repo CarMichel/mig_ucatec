@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: examen_postgres
+    restart: unless-stopped
+    ports:
+      - "3308:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: examen_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - examen_net
+
+  mongo:
+    image: mongo:7
+    container_name: examen_mongo
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongo_secret_pass
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - examen_net
+
+volumes:
+  postgres_data:
+  mongo_data:
+
+networks:
+  examen_net:
+    driver: bridge
